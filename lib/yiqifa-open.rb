@@ -10,8 +10,8 @@ class YiqifaOpen
   def initialize
     if File.exists?('config/yiqifa.yml')
       yiqifa_config = YAML.load_file('config/yiqifa.yml')[ENV["RAILS_ENV"] || ENV["RACK_ENV"] || "development"]
-      Yiqifa::Config.api_key=config["api_key"]
-      Yiqifa::Config.api_secret==config["api_secret"]
+      Yiqifa::Config.api_key=yiqifa_config["api_key"]
+      Yiqifa::Config.api_secret==yiqifa_config["api_secret"]
     else
       puts "\n\n=========================================================\n\n" +
          "  You haven't made a config/yiqifa.yml file.\n\n  You should.  \n\n  The yiqifa-open gem will work much better if you do\n\n" +
