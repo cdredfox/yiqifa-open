@@ -3,11 +3,14 @@ require 'net/http'
 require "openssl"
 require "base64"
 require "yaml"
+require "yaml"
+require "erb"
+require 'open-uri'
 
 class YiqifaOpen
 
   def initialize
-    config=YAML.load_file(RAILS_ROOT + "/config/yiqifa.yml")
+    config= YAML.load(ERB.new(open(:application).read).result)
     @@app_secret=config["app_secret"]
     @@app_key==config["app_key"]
   end
