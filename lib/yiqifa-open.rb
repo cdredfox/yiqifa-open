@@ -3,23 +3,28 @@ require 'net/http'
 require "openssl"
 require "base64"
 require "yaml"
-require "yaml"
-require "erb"
-require 'open-uri'
+require "yiqifa-open/config"
 
 class YiqifaOpen
 
   def initialize
-    config= YAML.load(ERB.new(open(:application).read).result)
-    @@app_secret=config["app_secret"]
-    @@app_key==config["app_key"]
+    if File.exists?('config/yiqifa.yml')
+      yiqifa_config = YAML.load_file('config/yiqifa.yml')[ENV["RAILS_ENV"] || ENV["RACK_ENV"] || "development"]
+      Yiqifa::Config.api_key=config["api_key"]
+      Yiqifa::Config.api_secret==config["api_secret"]
+    else
+      puts "\n\n=========================================================\n\n" +
+         "  You haven't made a config/yiqifa.yml file.\n\n  You should.  \n\n  The yiqifa-open gem will work much better if you do\n\n" +
+         "  Please set Yiqifa::Config.api_key and \n  Yiqifa::Config.api_secret\n  somewhere in your initialization process\n\n" +
+         "=========================================================\n\n"
+    end
   end
   
 	def exec_api(api_url="",b_params={})
     
-		app_secret=@@app_secret
+		app_secret=Yiqifa::Config.api_key
 		
-    app_key=@@app_secret
+    app_key=Yiqifa::Config.api_secret
 		oauth_params={
 			:oauth_consumer_key=>app_key,
 			:oauth_nonce=>Time.now.to_i,
