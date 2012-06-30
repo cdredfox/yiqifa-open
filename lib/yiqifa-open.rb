@@ -26,7 +26,7 @@ class YiqifaOpen
 		
     app_key=Yiqifa::Config.api_secret
 		oauth_params={
-			:oauth_consumer_key=>app_key,
+			:oauth_consumer_key=>app_key.to_s,
 			:oauth_nonce=>Time.now.to_i,
 			:oauth_signature_method=>"HMAC-SHA1",
 			:oauth_timestamp=>Time.now.to_i,
@@ -55,7 +55,7 @@ class YiqifaOpen
 			end
 		end
 		base_str="GET&"+URI.escape(api_url, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))+"&"+params_string
-		key=app_secret+"&openyiqifa"
+		key=app_secret.to_s+"&openyiqifa"
 		sign=Base64.encode64 OpenSSL::HMAC.digest("SHA1", key, base_str)
 		uri = URI(api_url)
 		uri.query = URI.encode_www_form(b_params)
