@@ -62,7 +62,7 @@ class YiqifaOpen
 		req = Net::HTTP::Get.new(uri.request_uri)
 		oauth_params_str = "OAuth " + oauth_params_str + ",oauth_signature=\"" + sign.strip + "\"";
 		req['Authorization']=oauth_params_str
-		res = Net::HTTP.start(uri.hostname, uri.port) {|http|
+		res = Net::HTTP.start(uri.host, uri.port) {|http|
 		  http.request(req)
 		}
 	  res.body
