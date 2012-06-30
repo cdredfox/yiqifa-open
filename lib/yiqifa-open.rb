@@ -20,10 +20,8 @@ class YiqifaOpen
     end
   end
   
-	def exec_api(api_url="",b_params={})
-    
+	def exec_api(api_url="",b_params={}) 
 		app_secret=Yiqifa::Config.api_key.to_s
-		
     app_key=Yiqifa::Config.api_secret.to_s
 		oauth_params={
 			:oauth_consumer_key=>app_key,
@@ -62,7 +60,7 @@ class YiqifaOpen
 		req = Net::HTTP::Get.new(uri.request_uri)
 		oauth_params_str = "OAuth " + oauth_params_str + ",oauth_signature=\"" + sign.strip + "\"";
 		req['Authorization']=oauth_params_str
-		res = Net::HTTP.start(uri.hostname, uri.port) {|http|
+		res = Net::HTTP.start(uri.host, uri.port) {|http|
 		  http.request(req)
 		}
 	  res.body
