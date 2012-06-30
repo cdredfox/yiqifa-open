@@ -22,11 +22,11 @@ class YiqifaOpen
   
 	def exec_api(api_url="",b_params={})
     
-		app_secret=Yiqifa::Config.api_key
+		app_secret=Yiqifa::Config.api_key.to_s
 		
-    app_key=Yiqifa::Config.api_secret
+    app_key=Yiqifa::Config.api_secret.to_s
 		oauth_params={
-			:oauth_consumer_key=>app_key.to_s,
+			:oauth_consumer_key=>app_key,
 			:oauth_nonce=>Time.now.to_i,
 			:oauth_signature_method=>"HMAC-SHA1",
 			:oauth_timestamp=>Time.now.to_i,
@@ -55,14 +55,14 @@ class YiqifaOpen
 			end
 		end
 		base_str="GET&"+URI.escape(api_url, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))+"&"+params_string
-		key=app_secret.to_s+"&openyiqifa"
+		key=app_secret+"&openyiqifa"
 		sign=Base64.encode64 OpenSSL::HMAC.digest("SHA1", key, base_str)
 		uri = URI(api_url)
 		uri.query = URI.encode_www_form(b_params)
 		req = Net::HTTP::Get.new(uri.request_uri)
 		oauth_params_str = "OAuth " + oauth_params_str + ",oauth_signature=\"" + sign.strip + "\"";
 		req['Authorization']=oauth_params_str
-		res = Net::HTTP.start(uri.host, uri.port) {|http|
+		res = Net::HTTP.start(uri.hostname, uri.port) {|http|
 		  http.request(req)
 		}
 	  res.body
