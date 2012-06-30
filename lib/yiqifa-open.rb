@@ -21,10 +21,8 @@ class YiqifaOpen
   end
   
 	def exec_api(api_url="",b_params={}) 
-		app_secret=Yiqifa::Config.api_key.to_s
-    app_key=Yiqifa::Config.api_secret.to_s
-
-    puts "key is #{app_key},secret is #{secret}"
+		app_secret=Yiqifa::Config.api_secret.to_s
+    app_key=Yiqifa::Config.api_key.to_s
 		oauth_params={
 			:oauth_consumer_key=>app_key,
 			:oauth_nonce=>Time.now.to_i,
